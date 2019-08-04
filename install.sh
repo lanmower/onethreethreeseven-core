@@ -201,7 +201,33 @@ success "Installed system updates!"
 
 heading "Installing ARK Core..."
 
-yarn global add @arkecosystem/core
+shopt -s expand_aliases
+alias ark="$HOME/onethreethreeseven/packages/core/bin/run"
+echo 'alias onethreethreeseven="$HOME/onethreethreeseven/packages/core/bin/run"' >> ~/.bashrc
+
+rm -rf "$HOME/onethreethreeseven"
+git clone "https://github.com/lanmower/onethreethreeseven-core" "$HOME/onethreethreeseven" || FAILED="Y"
+if [ "$FAILED" == "Y" ]; then
+    echo "Failed to fetch core repo with origin 'https://github.com/lanmower/onethreethreeseven-core'"
+
+    exit 1
+fi
+
+cd "$HOME/onethreethreeseven"
+HAS_REMOTE=$(git branch -a | fgrep -o "remotes/origin/chore/bridgechain-changes")
+if [ ! -z "$HAS_REMOTE" ]; then
+    git checkout chore/bridgechain-changes
+fi
+
+YARN_SETUP="N"
+while [ "$YARN_SETUP" == "N" ]; do
+  YARN_SETUP="Y"
+  yarn setup || YARN_SETUP="N"
+done
+rm -rf "$HOME/.config/@onethreethreeseven"
+rm -rf "$HOME/.config/@onethreethreeseven"
+rm -rf "$HOME/.config/onethreethreeseven-core"
+
 echo 'export PATH=$(yarn global bin):$PATH' >> ~/.bashrc
 export PATH=$(yarn global bin):$PATH
 ark config:publish
