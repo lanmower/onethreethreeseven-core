@@ -19,7 +19,6 @@ lib-cov
 .nyc_output
 
 # vscode
-.vscode
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
@@ -73,3 +72,4 @@ docker/development
 tmp
 oclif.manifest.json
 npm-shrinkwrap.json
+config.bat
